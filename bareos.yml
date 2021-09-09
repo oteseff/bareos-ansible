@@ -16,3 +16,4 @@
   roles:
     - role: bareos-client
   tags: bareos-client
+  become: true

@@ -4,14 +4,12 @@
   package:
     name: bareos-client
     state: present
-  become: true
 
 - name: Start and enable Bareos client service
   service:
     name: "bareos-fd"
     enabled: yes
     state: started
-  become: true
 
 - name: Configure clients
   template:
@@ -26,4 +24,3 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['director'][0] }}"
   notify: Restart Bareos-dir service
-  become: true
