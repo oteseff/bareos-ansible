@@ -29,5 +29,6 @@ Please, use the inventory.example file as a reference for the required groups.
 
 #### TODO:
 - [x] Install and configure Bareos (Director, WebUI, Clients)
+- [ ] Bareos Storage
 - [ ] SSL support
 - [ ] Jobs creation
