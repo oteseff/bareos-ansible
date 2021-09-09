@@ -1,6 +1,8 @@
 Bareos Ansible
 --------------
 
+Original: https://github.com/MaxBab/bareos-ansible
+
 ### Bareos - Backup Archiving REcovery Open Sourced
 Bareos (Backup Archiving Recovery Open Sourced) is a reliable, cross-network
 open source software for backup, archiving and recovery of data for all
