@@ -4,6 +4,7 @@
   package:
     name: bareos-client
     state: present
+  become: yes
 
 - name: Start and enable Bareos client service
   service:
