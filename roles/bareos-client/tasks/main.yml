@@ -20,7 +20,7 @@
 - name: Configure clients on Director
   template:
     src: client-fd.conf.j2
-    dest: /etc/bareos/bareos-dir.d/client/{{ ansible_hostname }}-fd.conf
+    dest: /etc/bareos/bareos-dir.d/client/{{ inventory_hostname }}-fd.conf
   delegate_to: "{{ item }}"
   with_items: "{{ groups['director'][0] }}"
   notify: Restart Bareos-dir service

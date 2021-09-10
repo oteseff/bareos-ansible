@@ -1,5 +1,5 @@
 Client {
-  Name = {{ ansible_hostname }}
-  Address = {{ ansible_default_ipv4.address }}
+  Name = {{ inventory_hostname }}
+  Address = {{ inventory_hostname }}
   Password = {{ client_password }}
 }
