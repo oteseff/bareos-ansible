@@ -15,12 +15,18 @@
   template:
     src: client-bareos-dir.conf.j2
     dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
+    owner: {{ bareos_user }}
+    group: {{ bareos_group }}
+    mode: 0640
   notify: Restart Bareos-fd service
 
 - name: Configure clients on Director
   template:
     src: client-fd.conf.j2
     dest: /etc/bareos/bareos-dir.d/client/{{ inventory_hostname }}-fd.conf
+    owner: {{ bareos_user }}
+    group: {{ bareos_group }}
+    mode: 0640
   delegate_to: "{{ item }}"
   with_items: "{{ groups['director'][0] }}"
   notify: Restart Bareos-dir service

@@ -17,3 +17,10 @@
     - role: bareos-client
   tags: bareos-client
   become: true
+
+- name: Bareos jobs
+  hosts: clients
+  roles:
+    - role: bareos-job
+  tags: bareos-job
+  become: true

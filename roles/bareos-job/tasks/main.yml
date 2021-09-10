@@ -1,0 +1,12 @@
+---
+
+- name: Configure jobs on Director
+  template:
+    src: job.conf.j2
+    dest: /etc/bareos/bareos-dir.d/job/{{ inventory_hostname }}-ai-backkup.conf
+    owner: {{ bareos_user }}
+    group: {{ bareos_group }}
+    mode: 0640
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['director'][0] }}"
+  notify: Restart Bareos-dir service
