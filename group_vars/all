@@ -24,9 +24,9 @@ mariadb_login_host: localhost
 webui_admin_user: admin
 webui_admin_pass: "P@ssw0rd!"
 
-client_password: "P@ssw0rd!" #vPH1@OanfQpNTl$6#sk*t3!lQ
+client_password: "P@ssw0rd!"
 
-job_defaults: Nightly #AI-BackupLinuxServers
+job_defaults: Nightly
 
 bareos_user: bareos
 bareos_group: bareos
