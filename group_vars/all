@@ -30,3 +30,4 @@ job_defaults: Nightly
 
 bareos_user: bareos
 bareos_group: bareos
+client_port: 9102

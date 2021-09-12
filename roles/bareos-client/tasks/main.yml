@@ -11,6 +11,12 @@
     enabled: yes
     state: started
 
+- name: Open firewall port in default zone for Bareos client
+  firewalld:
+    port: "{{ client_port }}"/tcp
+    permanent: yes
+    state: enabled
+
 - name: Configure clients
   template:
     src: client-bareos-dir.conf.j2
