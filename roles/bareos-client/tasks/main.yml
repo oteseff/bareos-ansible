@@ -11,11 +11,28 @@
     enabled: yes
     state: started
 
-- name: Open firewall port in default zone for Bareos client
+
+- name: Open firewall port in default zone for Bareos client for RHEL/CentOS
   firewalld:
     port: "{{ client_port }}/tcp"
     permanent: yes
     state: enabled
+  when: ansible_os_family == 'RedHat'
+
+
+- name: Open firewall port in default zone for Bareos client for Debian/Ubuntu
+  ufw:
+    rule: allow
+    port: "{{ client_port }}"
+    proto: tcp
+  when: ansible_os_family == 'Debian'
+
+- name: Reload firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+  become: true
+  when: ansible_os_family == 'Debian'
 
 - name: Configure clients
   template:
