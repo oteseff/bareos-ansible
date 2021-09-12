@@ -13,7 +13,7 @@
 
 - name: Open firewall port in default zone for Bareos client
   firewalld:
-    port: "{{ client_port }}"/tcp
+    port: "{{ client_port }}/tcp"
     permanent: yes
     state: enabled
 
