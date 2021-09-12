@@ -32,7 +32,6 @@
     name: firewalld
     state: reloaded
   become: true
-  when: ansible_os_family == 'Debian'
 
 - name: Configure clients
   template:
