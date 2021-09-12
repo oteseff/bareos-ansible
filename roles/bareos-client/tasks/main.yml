@@ -5,13 +5,6 @@
     name: bareos-client
     state: present
 
-- name: Start and enable Bareos client service
-  service:
-    name: "bareos-fd"
-    enabled: yes
-    state: started
-
-
 - name: Open firewall port in default zone for Bareos client for RHEL/CentOS
   firewalld:
     port: "{{ client_port }}/tcp"
@@ -19,6 +12,11 @@
     state: enabled
   when: ansible_os_family == 'RedHat'
 
+- name: Start and enable Bareos client service
+  service:
+    name: "bareos-fd"
+    enabled: yes
+    state: started
 
 - name: Open firewall port in default zone for Bareos client for Debian/Ubuntu
   ufw:
@@ -52,3 +50,4 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['director'][0] }}"
   notify: Restart Bareos-dir service
+

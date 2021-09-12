@@ -12,3 +12,4 @@
   service:
     name: bareos-fd
     state: restarted
+  become: true
