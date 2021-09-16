@@ -17,7 +17,6 @@
     chain: INPUT
     protocol: tcp
     destination_port: "{{ client_port }}"
-    cstate: NEW
     jump: ACCEPT
     Comment: Accept new connection for Bareos
   become: true
