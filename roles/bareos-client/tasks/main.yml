@@ -16,7 +16,7 @@
   iptables:
     chain: INPUT
     protocol: tcp
-    destination_port: "{{ client_port }}|string"
+    destination_port: "{{ client_port }}"
     jump: ACCEPT
     comment: Accept connection for Bareos
   become: true
