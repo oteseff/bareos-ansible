@@ -18,7 +18,7 @@
     protocol: tcp
     destination_port: "{{ client_port }}"
     jump: ACCEPT
-    Comment: Accept new connection for Bareos
+    comment: Accept connection for Bareos
   become: true
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 6
 
