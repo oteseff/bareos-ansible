@@ -17,16 +17,18 @@
     chain: INPUT
     protocol: tcp
     destination_port: "{{ client_port }}"
+    ctstate: NEW
     jump: ACCEPT
     comment: Accept connection for Bareos
   become: true
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 6
 
-- name: Start and enable Bareos client service
-  service:
-    name: "bareos-fd"
-    enabled: yes
-    state: started
+- name: Save iptables state for RHEL/CentOS 6
+  iptables_state:
+    state: saved
+    path: /etc/sysconfig/iptables
+  become: true
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 6
 
 - name: Open firewall port in default zone for Bareos client for Debian/Ubuntu
   ufw:
@@ -35,6 +37,12 @@
     proto: tcp
   when: ansible_os_family == 'Debian'
 
+- name: Start and enable Bareos client service
+  service:
+    name: "bareos-fd"
+    enabled: yes
+    state: started
+
 - name: Reload firewalld for RHEL/CentOS 7/8
   systemd:
     name: firewalld
@@ -42,7 +50,7 @@
   become: true
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
 
-- name: Reload iptables for RHEL/CentOS 6
+- name: Restart iptables for RHEL/CentOS 6
   service:
     name: iptables
     enabled: yes
