@@ -10,7 +10,7 @@
     port: "{{ client_port }}/tcp"
     permanent: yes
     state: enabled
-  when: ansible_os_family == 'RedHat' and ansible_lsb.major_release|int >= 7
+  when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int >= 7
 
 - name: Open firewall port in default zone for Bareos client for RHEL/CentOS 6
   iptables:
@@ -21,7 +21,7 @@
     jump: ACCEPT
     Comment: Accept new connection for Bareos
   become: true
-  when: ansible_os_family == 'RedHat' and ansible_lsb.major_release|int <= 6
+  when: ansible_os_family == "RedHat" and ansible_lsb.major_release|int <= 6
 
 - name: Start and enable Bareos client service
   service:
