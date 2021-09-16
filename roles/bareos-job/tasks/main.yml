@@ -3,7 +3,7 @@
 - name: Configure jobs on Director
   template:
     src: job.conf.j2
-    dest: /etc/bareos/bareos-dir.d/job/{{ inventory_hostname }}-ai-backkup.conf
+    dest: /etc/bareos/bareos-dir.d/job/{{ inventory_hostname }}-ai-backup.conf
     owner: "{{ bareos_user }}"
     group: "{{ bareos_group }}"
     mode: 0640
