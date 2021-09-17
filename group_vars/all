@@ -20,6 +20,7 @@ mariadb_login_host: localhost
 ### Latest will be used by default ###############
 ##################################################
 #bareos_version:
+bareos_version_centos6: 18.2
 
 webui_admin_user: admin
 webui_admin_pass: "P@ssw0rd!"
