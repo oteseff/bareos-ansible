@@ -27,7 +27,6 @@
     destination_port: "{{ client_port }}"
     ctstate: NEW
     jump: ACCEPT
-    comment: Accept connection for Bareos
   become: true
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 6
 
