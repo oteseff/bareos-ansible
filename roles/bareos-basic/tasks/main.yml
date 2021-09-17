@@ -9,19 +9,6 @@
     gpgkey: "http://download.bareos.org/bareos/release/{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key"
     enabled: yes
     state: present
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-  become: true
-
-- name: Set Bareos repo for RHEL/CentOS 6
-  yum_repository:
-    name: bareos
-    description: 'bareos repo details'
-    baseurl: "http://download.bareos.org/bareos/release/{{ bareos_version_centos6 | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}/"
-    gpgcheck: yes
-    gpgkey: "http://download.bareos.org/bareos/release/{{ bareos_version_centos6 | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key"
-    enabled: yes
-    state: present
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 6
   become: true
 
 - block:
