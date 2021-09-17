@@ -4,6 +4,13 @@
   package:
     name: bareos-client
     state: present
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+
+- name: Install Bareos client for RHEL/CentOS 6
+  package:
+    name: bareos-client-18.2*
+    state: present
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 6
 
 - name: Open firewall port in default zone for Bareos client for RHEL/CentOS 7/8
   firewalld:
