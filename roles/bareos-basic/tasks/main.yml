@@ -1,6 +1,6 @@
 ---
 
-- name: Set Bareos repo for RHEL/CentOS
+- name: Set Bareos repo for RHEL/CentOS 7/8
   yum_repository:
     name: bareos
     description: 'bareos repo details'
@@ -12,7 +12,7 @@
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
   become: true
 
-- name: Set Bareos repo for RHEL/CentOS
+- name: Set Bareos repo for RHEL/CentOS 6
   yum_repository:
     name: bareos
     description: 'bareos repo details'
