@@ -5,7 +5,6 @@
     name: bareos-client
     state: present
 
-
 - name: Open firewall port in default zone for Bareos client for RHEL/CentOS 7/8
   firewalld:
     port: "{{ client_port }}/tcp"
@@ -58,14 +57,35 @@
     enabled: yes
     state: started
 
-- name: Configure clients
+- name: Configure client self and director
   template:
-    src: client-bareos-dir.conf.j2
-    dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
+    src: {{ item.src }}
+    dest: {{ item.dest }}
     owner: "{{ bareos_user }}"
     group: "{{ bareos_group }}"
     mode: 0640
-  notify: Restart Bareos-fd service
+  with_items:
+    - { src: client-bareos-dir.conf.j2, dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf}
+    - { src: client-myself.conf.j2, dest: /etc/bareos/bareos-fd.d/client/myself.conf}
+  notify: 
+    - Restart Bareos-fd service
+
+# - name: Configure client director
+#   template:
+#     src: client-bareos-dir.conf.j2
+#     dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
+#     owner: "{{ bareos_user }}"
+#     group: "{{ bareos_group }}"
+#     mode: 0640
+#   notify: Restart Bareos-fd service
+
+# - name: Configure client self
+#     src: client-myself.conf.j2
+#     dest: /etc/bareos/bareos-fd.d/client/myself.conf
+#     owner: "{{ bareos_user }}"
+#     group: "{{ bareos_group }}"
+#     mode: 0640
+#   notify: Restart Bareos-fd service
 
 - name: Configure clients on Director
   template:
