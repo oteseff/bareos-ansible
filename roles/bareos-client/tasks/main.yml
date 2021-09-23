@@ -1,6 +1,6 @@
 ---
 
-- name: Install Bareos client for RHEL/CentOS 7/8
+- name: Install Bareos client for RHEL/CentOS
   package:
     name: bareos-client
     state: present
@@ -51,13 +51,7 @@
   become: true
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int <= 6
 
-- name: Start and enable Bareos client service
-  service:
-    name: "bareos-fd"
-    enabled: yes
-    state: started
-
-- name: Configure client self and director
+- name: Configure client configuration self and director
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -65,8 +59,8 @@
     group: "{{ bareos_group }}"
     mode: 0640
   with_items:
-    - { src: client-bareos-dir.conf.j2, dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf}
-    - { src: client-myself.conf.j2, dest: /etc/bareos/bareos-fd.d/client/myself.conf}
+    - { src: client-bareos-dir.conf.j2, dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf }
+    - { src: client-myself.conf.j2, dest: /etc/bareos/bareos-fd.d/client/myself.conf }
   notify: 
     - Restart Bareos-fd service
 
@@ -86,6 +80,12 @@
 #     group: "{{ bareos_group }}"
 #     mode: 0640
 #   notify: Restart Bareos-fd service
+
+- name: Start and enable Bareos client service
+  service:
+    name: "bareos-fd"
+    enabled: yes
+    state: started
 
 - name: Configure clients on Director
   template:
