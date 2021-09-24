@@ -32,8 +32,7 @@
 
     - name: Set Bareos repo for Debian/Ubuntu distribution
       apt_repository:
-        repo: "deb http://download.bareos.org/bareos/release/\
-        {% if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '10.04' %}15.2/xUbuntu_12.04{% endif %}/"
+        repo: "deb http://download.bareos.org/bareos/release/15.2/xUbuntu_12.04/ /\n"
         filename: bareos
         update_cache: yes
         state: present
