@@ -24,16 +24,18 @@
 - block:
     - name: Add a key for Bareos install for Debian/Ubuntu distribution
       apt_key:
-        url: "http://download.bareos.org/bareos/release/{{ bareos_version | default('latest') }}/\
-        {% if ansible_distribution == 'Ubuntu' %}x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
-        {% elif ansible_distribution == 'Debian' %}{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %}/Release.key"
+        url: "http://download.bareos.org/bareos/release/\
+        {% if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '10.04' %}15.2/xUbuntu_12.04\
+        {% if ansible_distribution == 'Ubuntu' %}{{ bareos_version | default('latest') }}/x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
+        {% elif ansible_distribution == 'Debian' %}{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %}/Release.key"
         state: present
 
     - name: Set Bareos repo for Debian/Ubuntu distribution
       apt_repository:
-        repo: "deb http://download.bareos.org/bareos/release/{{ bareos_version | default('latest') }}/\
-        {% if ansible_distribution == 'Ubuntu' %}x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
-        {% elif ansible_distribution == 'Debian' %}{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %} /"
+        repo: "deb http://download.bareos.org/bareos/release/\
+        {% if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '10.04' %}15.2/xUbuntu_12.04\
+        {% if ansible_distribution == 'Ubuntu' %}{{ bareos_version | default('latest') }}/x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
+        {% elif ansible_distribution == 'Debian' %}{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %} /"
         filename: bareos
         update_cache: yes
         state: present
