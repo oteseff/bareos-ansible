@@ -39,6 +39,7 @@
         {% elif ansible_distribution == 'Ubuntu' %}{{ bareos_version | default('latest') }}/x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
         {% elif ansible_distribution == 'Debian' %}{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %} /"
         filename: bareos
+        update_cache: yes
         state: present
   when: ansible_os_family == 'Debian'
   become: true
