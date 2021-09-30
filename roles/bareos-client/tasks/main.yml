@@ -102,7 +102,7 @@
     - name: Allow port 5985 for Bareos client
       win_firewall_rule:
         name: Bareos client
-        localport: 5985
+        localport: 9102
         action: allow
         direction: in
         protocol: tcp
