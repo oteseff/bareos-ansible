@@ -1,6 +1,0 @@
-Job {
-  Name = {{ inventory_hostname }}-ai-backup
-  Client = {{ inventory_hostname }}
-  JobDefs = "{% if ansible_os_family == 'RedHat' or ansible_os_family == 'Debian' %}{{ jobdefs_linux }}\
-  {% elif ansible_os_family == 'Windows'}{{ jobdefs_windows }}{% endif %}"
-}
