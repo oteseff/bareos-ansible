@@ -74,29 +74,29 @@
 
 - block:
     - name: Download and install Bareos Windows 32 bit client
-        win_package:
-          path: "{{ bareos_client_32 }}"
-          product_id: "bareos-fd"
-          arguments:
-          - /S
-          - /install
-          - "/CLIENTNAME={{ inventory_hostname }}"
-          - "/CLIENTADDRESS={{ inventory_hostname }}"
-          - "/CLIENTPASSWORD={{ client_password }}"
-          state: present
+      win_package:
+        path: "{{ bareos_client_32 }}"
+        product_id: "bareos-fd"
+        arguments:
+        - /S
+        - /install
+        - "/CLIENTNAME={{ inventory_hostname }}"
+        - "/CLIENTADDRESS={{ inventory_hostname }}"
+        - "/CLIENTPASSWORD={{ client_password }}"
+        state: present
       when: ansible_architecture == "32 bits"
 
     - name: Download and install Bareos Windows 64 bit client
-        win_package:
-          path: "{{ bareos_client_64 }}"
-          product_id: "bareos-fd"
-          arguments:
-          - /S
-          - /install
-          - "/CLIENTNAME={{ inventory_hostname }}"
-          - "/CLIENTADDRESS={{ inventory_hostname }}"
-          - "/CLIENTPASSWORD={{ client_password }}"
-          state: present
+      win_package:
+        path: "{{ bareos_client_64 }}"
+        product_id: "bareos-fd"
+        arguments:
+        - /S
+        - /install
+        - "/CLIENTNAME={{ inventory_hostname }}"
+        - "/CLIENTADDRESS={{ inventory_hostname }}"
+        - "/CLIENTPASSWORD={{ client_password }}"
+        state: present
       when: ansible_architecture == "64 bits"
   when: ansible_os_family == "Windows"
 
