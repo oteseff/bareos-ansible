@@ -96,7 +96,7 @@
         - "/CLIENTADDRESS={{ inventory_hostname }}"
         - "/CLIENTPASSWORD={{ client_password }}"
         state: present
-      when: ansible_architecture == "32 bits"
+      when: ansible_architecture == "32-bit"
 
     - name: Download and install Bareos Windows 64 bit client
       win_package:
@@ -109,5 +109,5 @@
         - "/CLIENTADDRESS={{ inventory_hostname }}"
         - "/CLIENTPASSWORD={{ client_password }}"
         state: present
-      when: ansible_architecture == "64 bits"
+      when: ansible_architecture == "64-bit"
   when: ansible_os_family == "Windows"
