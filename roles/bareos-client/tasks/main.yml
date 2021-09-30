@@ -98,6 +98,17 @@
         - "/CLIENTPASSWORD={{ client_password }}"
         state: present
       when: ansible_architecture == "64-bit"
+
+    - name: Allow port 5985 for Bareos client
+      win_firewall_rule:
+        name: Bareos client
+        localport: 5985
+        action: allow
+        direction: in
+        protocol: tcp
+        profiles: domain, private
+        state: present
+        enabled: yes
   when: ansible_os_family == "Windows"
 
 - name: Configure clients on Director
