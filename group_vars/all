@@ -26,7 +26,8 @@ webui_admin_pass: "P@ssw0rd!"
 
 client_password: "P@ssw0rd!"
 
-job_defaults: Nightly
+jobdefs_linux: BackupLinuxServers
+jobdefs_windows: BackupWindowsServers
 
 bareos_user: bareos
 bareos_group: bareos
