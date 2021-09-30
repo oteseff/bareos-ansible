@@ -81,6 +81,7 @@
     delegate_to: "{{ item }}"
     with_items: "{{ groups['director'][0] }}"
     notify: Restart Bareos-dir service
+  become: true
   when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"
 
 - block:

@@ -16,7 +16,6 @@
   roles:
     - role: bareos-client
   tags: bareos-client
-  become: true
 
 - name: Bareos jobs
   hosts: clients
