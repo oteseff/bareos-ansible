@@ -70,18 +70,6 @@
       name: "bareos-fd"
       enabled: yes
       state: started
-
-  - name: Configure clients on Director
-    template:
-      src: client-fd.conf.j2
-      dest: /etc/bareos/bareos-dir.d/client/{{ inventory_hostname }}-fd.conf
-      owner: "{{ bareos_user }}"
-      group: "{{ bareos_group }}"
-      mode: 0640
-    delegate_to: "{{ item }}"
-    with_items: "{{ groups['director'][0] }}"
-    notify: Restart Bareos-dir service
-  become: true
   when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"
 
 - block:
@@ -111,3 +99,15 @@
         state: present
       when: ansible_architecture == "64-bit"
   when: ansible_os_family == "Windows"
+
+- name: Configure clients on Director
+  template:
+    src: client-fd.conf.j2
+    dest: /etc/bareos/bareos-dir.d/client/{{ inventory_hostname }}-fd.conf
+    owner: "{{ bareos_user }}"
+    group: "{{ bareos_group }}"
+    mode: 0640
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['director'][0] }}"
+  notify: Restart Bareos-dir service
+become: true
