@@ -1,45 +1,47 @@
 ---
 
-- name: Set repo for CentOS 6
-  template:
-    src: CentOS-Base-EL6.repo
-    dest: /etc/yum.repos.d/CentOS-Base-EL6.repo
-  become: true
-  vars:
-    ansible_python_interpreter: /usr/bin/python
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
-
-- name: Set Bareos repo for RHEL/CentOS 7/8
-  yum_repository:
-    name: bareos
-    description: 'bareos repo details'
-    baseurl: "http://download.bareos.org/bareos/release/{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}/"
-    gpgcheck: yes
-    gpgkey: "http://download.bareos.org/bareos/release/{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key"
-    enabled: yes
-    state: present
-  become: true
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-
 - block:
-    - name: Add a key for Bareos install for Debian/Ubuntu distribution
-      apt_key:
-        url: "http://download.bareos.org/bareos/release/\
-        {% if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '10.04' %}12.4/xUbuntu_10.04\
-        {% elif ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04' %}20/xUbuntu_20.04\
-        {% elif ansible_distribution == 'Ubuntu' %}{{ bareos_version | default('latest') }}/x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
-        {% elif ansible_distribution == 'Debian' %}{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %}/Release.key"
-        state: present
+  - name: Set repo for CentOS 6
+    template:
+      src: CentOS-Base-EL6.repo
+      dest: /etc/yum.repos.d/CentOS-Base-EL6.repo
+    become: true
+    vars:
+      ansible_python_interpreter: /usr/bin/python
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
 
-    - name: Set Bareos repo for Debian/Ubuntu distribution
-      apt_repository:
-        repo: "deb http://download.bareos.org/bareos/release/\
-        {% if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '10.04' %}12.4/xUbuntu_10.04\
-        {% elif ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04' %}20/xUbuntu_20.04\
-        {% elif ansible_distribution == 'Ubuntu' %}{{ bareos_version | default('latest') }}/x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
-        {% elif ansible_distribution == 'Debian' %}{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %} /"
-        filename: bareos
-        update_cache: yes
-        state: present
-  when: ansible_os_family == 'Debian'
-  become: true
+  - name: Set Bareos repo for RHEL/CentOS 7/8
+    yum_repository:
+      name: bareos
+      description: 'bareos repo details'
+      baseurl: "http://download.bareos.org/bareos/release/{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}/"
+      gpgcheck: yes
+      gpgkey: "http://download.bareos.org/bareos/release/{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}/repodata/repomd.xml.key"
+      enabled: yes
+      state: present
+    become: true
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+
+  - block:
+      - name: Add a key for Bareos install for Debian/Ubuntu distribution
+        apt_key:
+          url: "http://download.bareos.org/bareos/release/\
+          {% if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '10.04' %}12.4/xUbuntu_10.04\
+          {% elif ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04' %}20/xUbuntu_20.04\
+          {% elif ansible_distribution == 'Ubuntu' %}{{ bareos_version | default('latest') }}/x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
+          {% elif ansible_distribution == 'Debian' %}{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %}/Release.key"
+          state: present
+
+      - name: Set Bareos repo for Debian/Ubuntu distribution
+        apt_repository:
+          repo: "deb http://download.bareos.org/bareos/release/\
+          {% if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '10.04' %}12.4/xUbuntu_10.04\
+          {% elif ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04' %}20/xUbuntu_20.04\
+          {% elif ansible_distribution == 'Ubuntu' %}{{ bareos_version | default('latest') }}/x{{ ansible_distribution }}_{{ ansible_distribution_version }}\
+          {% elif ansible_distribution == 'Debian' %}{{ bareos_version | default('latest') }}/{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.0{% endif %} /"
+          filename: bareos
+          update_cache: yes
+          state: present
+    when: ansible_os_family == "Debian"
+    become: true
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"
