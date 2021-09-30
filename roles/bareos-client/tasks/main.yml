@@ -1,91 +1,104 @@
 ---
 
-- name: Install Bareos client for RHEL/CentOS
-  package:
-    name: bareos-client
-    state: present
+- block:
+  - name: Install Bareos client
+    package:
+      name: bareos-client
+      state: present
 
-- name: Open firewall port in default zone for Bareos client for RHEL/CentOS 7/8
-  firewalld:
-    port: "{{ client_port }}/tcp"
-    permanent: yes
-    state: enabled
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+  - name: Open firewall port in default zone for Bareos client for RHEL/CentOS 7/8
+    firewalld:
+      port: "{{ client_port }}/tcp"
+      permanent: yes
+      state: enabled
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
 
-- name: Open firewall port in default zone for Bareos client for RHEL/CentOS 6
-  iptables:
-    action: insert
-    chain: INPUT
-    protocol: tcp
-    destination_port: "{{ client_port }}"
-    jump: ACCEPT
-  become: true
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+  - name: Open firewall port in default zone for Bareos client for RHEL/CentOS 6
+    iptables:
+      action: insert
+      chain: INPUT
+      protocol: tcp
+      destination_port: "{{ client_port }}"
+      jump: ACCEPT
+    become: true
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
 
-- name: Save iptables state for RHEL/CentOS 6
-  community.general.iptables_state:
-    state: saved
-    path: /etc/sysconfig/iptables
-  become: true
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+  - name: Save iptables state for RHEL/CentOS 6
+    community.general.iptables_state:
+      state: saved
+      path: /etc/sysconfig/iptables
+    become: true
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
 
-- name: Open firewall port in default zone for Bareos client for Debian/Ubuntu
-  ufw:
-    rule: allow
-    port: "{{ client_port }}"
-    proto: tcp
-  when: ansible_os_family == 'Debian'
+  - name: Open firewall port in default zone for Bareos client for Debian/Ubuntu
+    ufw:
+      rule: allow
+      port: "{{ client_port }}"
+      proto: tcp
+    when: ansible_os_family == 'Debian'
 
-- name: Reload firewalld for RHEL/CentOS 7/8
-  systemd:
-    name: firewalld
-    state: reloaded
-  become: true
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+  - name: Reload firewalld for RHEL/CentOS 7/8
+    systemd:
+      name: firewalld
+      state: reloaded
+    become: true
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
 
-- name: Restart iptables for RHEL/CentOS 6
-  service:
-    name: iptables
-    enabled: yes
-    state: restarted
-  become: true
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+  - name: Restart iptables for RHEL/CentOS 6
+    service:
+      name: iptables
+      enabled: yes
+      state: restarted
+    become: true
+    when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
 
-- name: Configure client configuration self and director
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: "{{ bareos_user }}"
-    group: "{{ bareos_group }}"
-    mode: 0640
-  with_items:
-    - { src: client-bareos-dir.conf.j2, dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf }
-    - { src: client-myself.conf.j2, dest: /etc/bareos/bareos-fd.d/client/myself.conf }
-  notify: 
-    - Restart Bareos-fd service
+  - name: Configure client configuration self and director
+    template:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+      owner: "{{ bareos_user }}"
+      group: "{{ bareos_group }}"
+      mode: 0640
+    with_items:
+      - { src: client-bareos-dir.conf.j2, dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf }
+      - { src: client-myself.conf.j2, dest: /etc/bareos/bareos-fd.d/client/myself.conf }
+    notify:
+      - Restart Bareos-fd service
 
-# - name: Configure client director
-#   template:
-#     src: client-bareos-dir.conf.j2
-#     dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf
-#     owner: "{{ bareos_user }}"
-#     group: "{{ bareos_group }}"
-#     mode: 0640
-#   notify: Restart Bareos-fd service
+  - name: Start and enable Bareos client service
+    service:
+      name: "bareos-fd"
+      enabled: yes
+      state: started
+  when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"
 
-# - name: Configure client self
-#     src: client-myself.conf.j2
-#     dest: /etc/bareos/bareos-fd.d/client/myself.conf
-#     owner: "{{ bareos_user }}"
-#     group: "{{ bareos_group }}"
-#     mode: 0640
-#   notify: Restart Bareos-fd service
+- block:
+    - name: Download and install Bareos Windows 32 bit client
+        win_package:
+          path: "{{ bareos_client_32 }}"
+          product_id: "bareos-fd"
+          arguments:
+          - /S
+          - /install
+          - "/CLIENTNAME={{ inventory_hostname }}"
+          - "/CLIENTADDRESS={{ inventory_hostname }}"
+          - "/CLIENTPASSWORD={{ client_password }}"
+          state: present
+      when: ansible_architecture == "32 bits"
 
-- name: Start and enable Bareos client service
-  service:
-    name: "bareos-fd"
-    enabled: yes
-    state: started
+    - name: Download and install Bareos Windows 64 bit client
+        win_package:
+          path: "{{ bareos_client_64 }}"
+          product_id: "bareos-fd"
+          arguments:
+          - /S
+          - /install
+          - "/CLIENTNAME={{ inventory_hostname }}"
+          - "/CLIENTADDRESS={{ inventory_hostname }}"
+          - "/CLIENTPASSWORD={{ client_password }}"
+          state: present
+      when: ansible_architecture == "64 bits"
+  when: ansible_os_family == "Windows"
 
 - name: Configure clients on Director
   template:
@@ -97,4 +110,3 @@
   delegate_to: "{{ item }}"
   with_items: "{{ groups['director'][0] }}"
   notify: Restart Bareos-dir service
-

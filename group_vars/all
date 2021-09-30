@@ -31,3 +31,6 @@ job_defaults: Nightly
 bareos_user: bareos
 bareos_group: bareos
 client_port: 9102
+
+bareos_client_32: "http://download.bareos.org/bareos/release/12.4/windows/winbareos-12.4.6-32-bit-r2.1.exe"
+bareos_client_64: "http://download.bareos.org/bareos/release/12.4/windows/winbareos-12.4.6-64-bit-r2.1.exe"
