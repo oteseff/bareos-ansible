@@ -26,6 +26,7 @@ Please, use the inventory.example file as a reference for the required groups.
 - Centos 7
 - Debian 8
 - Ubuntu 14.04
+- Windows
 
 #### TODO:
 - [x] Install and configure Bareos (Director, WebUI, Clients)
