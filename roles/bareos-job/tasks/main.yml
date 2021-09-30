@@ -9,4 +9,5 @@
     mode: 0640
   delegate_to: "{{ item }}"
   with_items: "{{ groups['director'][0] }}"
+  become: true
   notify: Restart Bareos-dir service

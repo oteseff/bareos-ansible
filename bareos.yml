@@ -22,4 +22,3 @@
   roles:
     - role: bareos-job
   tags: bareos-job
-  become: true
