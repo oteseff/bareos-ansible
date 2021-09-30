@@ -76,7 +76,7 @@
     - name: Download and install Bareos Windows 32 bit client
       win_package:
         path: "{{ bareos_client_32 }}"
-        creates_path: "C:\Program Files\Bareos"
+        creates_path: "C:\\Program Files\\Bareos"
         product_id: "Bareos-fd"
         arguments:
         - /S
@@ -90,7 +90,7 @@
     - name: Download and install Bareos Windows 64 bit client
       win_package:
         path: "{{ bareos_client_64 }}"
-        creates_path: "C:\Program Files\Bareos"
+        creates_path: "C:\\Program Files\\Bareos"
         product_id: "Bareos-fd"
         arguments:
         - /S
