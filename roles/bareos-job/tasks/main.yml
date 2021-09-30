@@ -2,7 +2,8 @@
 
 - name: Configure jobs on Director
   template:
-    src: job.conf.j2
+    src: "{% if ansible_os_family == 'RedHat' or ansible_os_family == 'Debian' %}linux\
+    {% elif ansible_os_family == 'Windows' %}windows(% endif %}-job.conf.j2"
     dest: /etc/bareos/bareos-dir.d/job/{{ inventory_hostname }}-ai-backup.conf
     owner: "{{ bareos_user }}"
     group: "{{ bareos_group }}"
