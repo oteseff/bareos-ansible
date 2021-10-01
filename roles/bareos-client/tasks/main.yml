@@ -83,7 +83,7 @@
         - /install
         - "/CLIENTNAME={{ inventory_hostname }}"
         - "/CLIENTADDRESS={{ inventory_hostname }}"
-        - "/CLIENTPASSWORD={{ client_password | quote }}"
+        - "/CLIENTPASSWORD={{ client_password "
         state: present
       when: ansible_architecture == "32-bit"
 
@@ -97,7 +97,7 @@
         - /install
         - "/CLIENTNAME={{ inventory_hostname }}"
         - "/CLIENTADDRESS={{ inventory_hostname }}"
-        - "/CLIENTPASSWORD={{ client_password | quote }}"
+        - "/CLIENTPASSWORD={{ client_password "
         state: present
       when: ansible_architecture == "64-bit"
 
