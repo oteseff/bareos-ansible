@@ -64,6 +64,7 @@
     with_items:
       - { src: client-bareos-dir.conf.j2, dest: /etc/bareos/bareos-fd.d/director/bareos-dir.conf }
       - { src: client-myself.conf.j2, dest: /etc/bareos/bareos-fd.d/client/myself.conf }
+    become: true
     notify:
       - Restart Bareos-fd service
 
@@ -72,6 +73,7 @@
       name: "bareos-fd"
       enabled: yes
       state: started
+    become: true
   when: ansible_os_family == "RedHat" or ansible_os_family == "Debian"
 
 - block:
